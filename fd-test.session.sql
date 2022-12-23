@@ -25,3 +25,14 @@ CREATE TABLE users(
     birthday date,
     gender varchar(100)
 );
+
+
+INSERT INTO users VALUES 
+('Clark', 'Kent', 'super@man.com', '1990-09-09', 'male');
+
+
+INSERT INTO users VALUES
+('Iron', 'Man', 'tonestark@com', '1892-02-02', 'male'),
+('Spider', 'Man', 'peter@parker.com', '1990-02-02', 'male'),
+('She', 'Halk', 'jane@lawyer.com', '1992-02-02', 'female'),
+('Loki', 'Odinsson', 'loki@loki', '1000-10-10', 'male');
