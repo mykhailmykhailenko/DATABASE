@@ -86,3 +86,33 @@ INSERT INTO messages VALUES
 
 INSERT INTO messages (author, body) VALUES
 ('test user', 'hellwwwwwwwwwlo text');
+
+
+----------Зв'язки (associations) ----------------
+
+CREATE TABLE products(
+    id serial PRIMARY KEY,
+    name varchar(100) NOT NULL CHECK (name != ''),
+    category varchar(100),
+    price numeric(10, 2) NOT NULL CHECK (price > 0),
+    quantity int CHECK (quantity > 0)
+);
+INSERT INTO products (name, price, quantity)
+VALUES
+('Samsung', 100, 5),
+('iPhone', 500, 1),
+('Sony', 200, 3);
+
+DROP TABLE orders;
+
+CREATE TABLE orders(
+    id serial PRIMARY KEY,
+    created_at timestamp DEFAULT current_timestamp,
+    customer_id int REFERENCES users(id)
+);
+
+INSERT INTO orders (customer_id) VALUES
+(1), (1), (2), (1), (3);
+
+INSERT INTO orders (customer_id) VALUES
+(4);
