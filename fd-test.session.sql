@@ -125,3 +125,28 @@ CREATE TABLE orders_to_products(
     quantity int CHECK (quantity > 0),
     PRIMARY KEY (product_id, order_id)
 );
+
+INSERT INTO orders_to_products (product_id, order_id, quantity) VALUES
+(1, 1, 1),
+(2, 1, 1),
+(3, 1, 1);
+
+
+
+/*
+Завдання:
+Створити таблицю юзерів
+- id
+- first_name
+-last_name
+-email
+-birthday
+-gender
+Створити таблицю повідомлень
+- author ----> user
+- body 
+- created_at default now
+- is_read
+Юзери об'єднуються в чати. В одному чаті - багато юзерів, в одного юзера - багато чатів.
+Юзери відправляють повідомлення. Одне повідомлення може бути тільки в одному чаті. Але в чаті може бути багато повідомлень
+*/
