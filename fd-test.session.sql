@@ -191,3 +191,34 @@ INSERT INTO users_to_chats VALUES
 
 INSERT INTO messages (author_id, body, chat_id) VALUES 
 (1, 'hello', 1), (2, 'hello yourself', 1);
+
+
+-------------------
+
+/*
+Сутність контенту.
+У контенту є:
+- назва (об.)
+- опис (необ.)
+- дата створення
+Є сутність реакцій.
+Реакція -> like : true
+        -> dislike : false
+        -> null (реакції немає, або вона знята користувачем)
+Реакція - це зв'язок між контентом і користувачем
+*/
+
+
+CREATE TABLE contents(
+    id serial PRIMARY KEY,
+    name varchar(300) NOT NULL CHECK (name != ''),
+    description text,
+    created_at timestamp DEFAULT current_timestamp
+);
+
+CREATE TABLE reactions (
+    content_id int REFERENCES contents(id),
+    user_id int REFERENCES users(id),
+    reaction boolean,
+    PRIMARY KEY (content_id, user_id)
+);
