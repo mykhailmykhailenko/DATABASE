@@ -222,3 +222,28 @@ CREATE TABLE reactions (
     reaction boolean,
     PRIMARY KEY (content_id, user_id)
 );
+
+
+-------1:1--------
+
+/*
+Тренер - команда
+*/
+
+--створюємо першу без посилання
+CREATE TABLE coaches(
+    id serial PRIMARY KEY,
+    name varchar(300)
+    -- team_id int REFERENCES team(id)
+);
+
+--створюємо другу
+CREATE TABLE teams (
+    id serial PRIMARY KEY,
+    name varchar(300),
+    coach_id int REFERENCES coaches(id)
+);
+
+--редагуємо першу, додавши до неї посилання
+ALTER TABLE coaches
+ADD COLUMN team_id int REFERENCES teams(id);
