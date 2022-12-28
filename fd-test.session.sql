@@ -247,3 +247,60 @@ CREATE TABLE teams (
 --редагуємо першу, додавши до неї посилання
 ALTER TABLE coaches
 ADD COLUMN team_id int REFERENCES teams(id);
+
+--------delete-------
+
+ALTER TABLE coaches
+DROP COLUMN team_id;
+
+DROP TABLE teams;
+
+DROP TABLE coaches;
+
+
+------UPDATE, DELETE--------
+
+UPDATE users
+SET last_name = 'Doe'
+WHERE id = 1;
+
+UPDATE users
+SET last_name = 'Man'
+WHERE id = 3;
+
+---Встановити вагу в 60кг всім хто народився після 1 січня 1990 року
+
+UPDATE users
+SET weight = 60
+WHERE birthday > '1990-01-01';
+
+DELETE FROM users
+WHERE id = 5;
+
+INSERT INTO users (
+    first_name,
+    last_name,
+    email,
+    birthday,
+    gender
+  )
+
+VALUES (
+  'John', 'Doe', 'doe!doe', '1999-09-09', 'female'
+);
+
+INSERT INTO users_to_chats VALUES
+(1, 7);
+
+--не вийде!
+UPDATE users
+SET id = 5
+WHERE id = 7;
+
+---------------SELECT---------
+SELECT * FROM users;
+
+SELECT * FROM users
+WHERE weight = 60;
+
+-----Спитати всіх юзерів, які народились після 1992 року
