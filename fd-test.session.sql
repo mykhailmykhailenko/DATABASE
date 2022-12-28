@@ -7,6 +7,7 @@ CREATE TABLE books(
    publisher varchar(256)
 );
 DROP TABLE books;
+
 /*
 створіть таблицю users
 В кожного юзера має бути:
@@ -22,9 +23,9 @@ CREATE TABLE users(
     id serial PRIMARY KEY,
     first_name varchar(256) NOT NULL CHECK (first_name != ''),
     last_name varchar(256) NOT NULL CHECK (last_name != ''),
-    email varchar(300) NOT NULL UNIQUE CHECK (last_name != ''),
+    email varchar(300) NOT NULL UNIQUE CHECK (email != ''),
     birthday date CHECK (birthday < current_date),
-    gender varchar(100) CHECK (last_name != '')
+    gender varchar(100) CHECK (gender != '')
 );
 
 ALTER TABLE users

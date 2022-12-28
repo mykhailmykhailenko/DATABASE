@@ -1,12 +1,3 @@
-CREATE TABLE books(
-   name varchar(300),
-   author varchar(300),
-   type varchar(150),
-   pages int,
-   year date,
-   publisher varchar(256)
-);
-
 /*
 
 Створити нову БАЗУ ДАНИХ university
@@ -35,6 +26,7 @@ CREATE TABLE books(
 Дисципліни пов'язані з факультетами. На одному факультеті викладається багато дисциплін, одна дисципліна може викладатися на декількох факультетах.
 
 */
+
 CREATE TABLE student(
     first_name varchar(150),
     last_name varchar(150),
