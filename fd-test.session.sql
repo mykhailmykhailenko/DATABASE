@@ -150,3 +150,44 @@ INSERT INTO orders_to_products (product_id, order_id, quantity) VALUES
 Юзери об'єднуються в чати. В одному чаті - багато юзерів, в одного юзера - багато чатів.
 Юзери відправляють повідомлення. Одне повідомлення може бути тільки в одному чаті. Але в чаті може бути багато повідомлень
 */
+
+CREATE TABLE messages (
+    id serial PRIMARY KEY,
+    author_id int REFERENCES users(id),
+    body text NOT NULL CHECK (body != '') ,
+    created_at timestamp NOT NULL DEFAULT current_timestamp,
+    is_read boolean DEFAULT false
+);
+
+ALTER TABLE messages
+ADD COLUMN chat_id int REFERENCES chats(id);
+
+/*
+PRIMARY KEY - первинний ключ - це NOT NULL + UNIQUE
+FOREIGN KEY - зовнішній ключ - це NOT NULL + посилання на стовбець іншої таблиці -> Ми не можемо
+записати сюди значення, яких не існує у головній таблиці (на яку ми ссилаємось)
+*/
+
+CREATE TABLE chats (
+    id serial PRIMARY KEY,
+    name varchar(200),
+    owner_id int REFERENCES users(id),
+    created_at timestamp NOT NULL DEFAULT current_timestamp
+);
+
+CREATE TABLE users_to_chats(
+    chat_id int REFERENCES chats(id),
+    user_id int REFERENCES users(id),
+    PRIMARY KEY (chat_id, user_id)
+);
+
+-------
+
+INSERT INTO chats (name, owner_id) VALUES
+('First chat', 1);
+
+INSERT INTO users_to_chats VALUES
+(1, 1), (1,2), (1,3);
+
+INSERT INTO messages (author_id, body, chat_id) VALUES 
+(1, 'hello', 1), (2, 'hello yourself', 1);
