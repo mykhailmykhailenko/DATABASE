@@ -175,9 +175,11 @@ CREATE TABLE chats (
     created_at timestamp NOT NULL DEFAULT current_timestamp
 );
 
+DROP TABLE users_to_chats;
+
 CREATE TABLE users_to_chats(
     chat_id int REFERENCES chats(id),
-    user_id int REFERENCES users(id),
+    user_id int REFERENCES users(id) ON DELETE CASCADE,
     PRIMARY KEY (chat_id, user_id)
 );
 
@@ -304,6 +306,9 @@ SELECT * FROM users
 WHERE weight = 60;
 
 -----Спитати всіх юзерів, які народились після 1992 року
+
+SELECT * FROM users
+WHERE birthday > '1992.01.01';
 
 
 /*
