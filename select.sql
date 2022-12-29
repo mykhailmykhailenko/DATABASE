@@ -99,5 +99,24 @@ WHERE id = 1
 RETURNING *;
 
 
-
 ---------------------
+
+
+SELECT * FROM users
+WHERE birthday < '2004-01-01';
+
+
+SELECT first_name, extract("years" from age(birthday)) FROM users;
+
+SELECT * FROM users
+WHERE extract("years" from age(birthday)) > 25;
+
+
+/*
+Вивести мейли всіх юзерів чоловічого роду, яким більше 18 і менше 60 років.
+*/
+
+
+SELECT email FROM users
+WHERE gender = 'male' AND
+(extract("years" from age(birthday)) BETWEEN 18 AND 60);
