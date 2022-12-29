@@ -37,6 +37,17 @@ ADD CONSTRAINT "too_high_user" CHECK (height < 4.0);
 ALTER TABLE users
 DROP CONSTRAINT users_email_key;
 
+
+ALTER TABLE products
+ADD COLUMN model varchar(200);
+
+ALTER TABLE products
+RENAME COLUMN name TO brand;
+
+DELETE FROM orders_to_products;
+
+DELETE FROM products;
+
 /*
 Додати юзерам нову колонку - вагу. Вага не має бути менше 0
 Додати перевірку, що користувач народився не раніше 1990року.
@@ -340,3 +351,9 @@ WHERE birthday > '1992.01.01';
 Міститиме оцінку студента з цієї дисципліни.
 Дисципліни пов'язані з факультетами. На одному факультеті викладається багато дисциплін, одна дисципліна може викладатися на декількох факультетах.
 */
+
+
+
+SELECT * FROM chats;
+
+INSERT INTO chats (name, owner_id) VALUES ('second', 1) RETURNING *;
