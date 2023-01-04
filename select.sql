@@ -149,3 +149,21 @@ UPDATE users
 SET weight = 80
 WHERE (extract('years' from age(birthday)) BETWEEN 30 AND 50) 
 AND gender = 'male';
+
+
+------------aliases
+
+
+SELECT * FROM users;
+
+
+SELECT id AS "Порядковий номер",
+first_name AS "Ім'я",
+last_name AS "Прізвище",
+email AS "Пошта",
+is_subscribe AS "Підписка"
+FROM users AS u;
+
+
+SELECT * FROM users AS u
+WHERE u.id = 2000;
