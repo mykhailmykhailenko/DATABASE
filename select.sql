@@ -187,3 +187,28 @@ OFFSET 20;
 SELECT * FROM orders
 LIMIT 50
 OFFSET 100;
+
+
+------------------------functions
+
+SELECT id, first_name || ' ' ||last_name AS full_name 
+FROM users;
+
+
+SELECT id, concat(first_name, ' ', last_name) AS full_name
+FROM users;
+
+---1
+SELECT id, concat(first_name, ' ', last_name) AS full_name
+FROM users
+WHERE char_length(concat(first_name, ' ', last_name)) > 10;
+
+--2
+SELECT * FROM (
+    SELECT id, concat(first_name, ' ', last_name) AS full_name
+    FROM users
+    ) AS fn
+WHERE char_length(fn.full_name) > 10;
+
+
+-------------------------
