@@ -166,4 +166,24 @@ FROM users AS u;
 
 
 SELECT * FROM users AS u
-WHERE u.id = 2000;
+WHERE u.id = 900;
+
+-------------------Пагінація---------------
+
+SELECT * 
+FROM users
+LIMIT 10;
+
+
+SELECT * FROM users
+LIMIT 10
+OFFSET 20;
+
+/*
+Третя сторінка всіх замовлень, де кількість елементів на видачу 50.
+*/
+
+
+SELECT * FROM orders
+LIMIT 50
+OFFSET 100;
