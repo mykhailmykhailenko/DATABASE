@@ -665,3 +665,41 @@ FROM products AS p
 JOIN orders_to_products AS otp
 ON p.id = otp.product_id
 WHERE otp.order_id = 7;
+
+-----------JOIN-----------
+
+---INNER JOIN --- перехрещення
+--- Все з однієї таблиці, що міститься в другій таблиці, вибране за певною умовою
+
+SELECT u.id, email, o.id AS order_id
+FROM users AS u
+JOIN orders AS o
+ON u.id = o.customer_id;
+
+----LEFT 
+SELECT u.id, email, o.id AS order_id
+FROM users AS u
+LEFT JOIN orders AS o
+ON u.id = o.customer_id;
+
+--RIGHT
+SELECT u.id, email, o.id AS order_id
+FROM users AS u
+RIGHT JOIN orders AS o
+ON u.id = o.customer_id;
+
+-------LEFT OUTER-----
+----Інформація про користувачів, які не робили замовлень
+
+SELECT u.id, email, o.id AS order_id
+FROM users AS u
+LEFT JOIN orders AS o
+ON u.id = o.customer_id
+WHERE o.id IS NULL;
+
+-----FULL----
+
+SELECT u.id, email, o.id AS order_id
+FROM users AS u
+FULL JOIN orders AS o
+ON u.id = o.customer_id;
