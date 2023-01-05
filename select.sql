@@ -539,3 +539,129 @@ SELECT sum(quantity), brand
 FROM products
 GROUP BY brand
 HAVING sum(quantity) > 50000;
+
+-------////////////////--------
+
+CREATE TABLE a
+(v char(3),
+t int);
+
+CREATE TABLE b 
+(v char(3));
+
+INSERT INTO a VALUES
+('XXX', 1), ('XXY', 1), ('XXZ', 1),
+('XYX', 2), ('XYY', 2), ('XYZ', 2),
+('YXX', 3), ('YXY', 3), ('YXZ', 3);
+
+INSERT INTO b VALUES
+('ZXX'), ('XXX'), ('ZXZ'), ('YXZ'), ('YXY');
+
+--
+SELECT * FROM A, B;
+
+-----Об'єднання (обьединение) - UNION -----
+
+SELECT v FROM a UNION 
+SELECT * FROM a;
+
+-----Перехрещення(пересечение) - INTERSECT ---
+
+SELECT v FROM a
+INTERSECT
+SELECT * FROM b;
+
+-----Віднімання (мінус) - EXCEPT ---
+
+SELECT v FROM a
+EXCEPT
+SELECT * FROM b;
+
+-----------
+
+INSERT INTO users (
+    first_name,
+    last_name,
+    email,
+    birthday,
+    gender
+  )
+VALUES (
+    'Tester1',
+    'Tester1',
+    'test@test',
+    '1990-02-02',
+    'male'
+  ),
+  (
+    'Tester2',
+    'Tester2',
+    'test2@test',
+    '1990-02-02',
+    'male'
+  ),
+  (
+    'Tester3',
+    'Tester3',
+    'test3@test',
+    '1990-02-02',
+    'male'
+  );
+
+SELECT * FROM users
+ORDER BY id DESC;
+
+/*
+Дізнатися id юзерів, які робили замовлення
+*/
+
+SELECT id FROM users
+INTERSECT
+SELECT customer_id FROM orders;
+
+/*
+Дізнатися id юзерів, які не робили замовлень
+*/
+
+SELECT id FROM users
+EXCEPT
+SELECT customer_id FROM orders;
+
+---- Дізнатися email людей, які ніколи замовлень не робили
+
+SELECT email FROM users
+WHERE id IN (
+    SELECT id FROM users
+    EXCEPT
+    SELECT customer_id FROM orders);
+
+-----------------З'єднання (соединение) - JOIN -------- 
+
+SELECT A.v as "id",
+A.t as "price",
+B.v as "phone_id"
+FROM a, b
+WHERE a.v = b.v;
+
+SELECT *
+FROM A JOIN B ON A.v = B.v;
+
+/*
+Всі замовлення юзера з id 1865
+*/
+
+SELECT u.*, o.id AS order_id 
+FROM users AS u
+JOIN orders AS o
+ON o.customer_id = u.id
+WHERE u.id = 1865;
+
+/*
+Всі моделі телефонів, які були куплені у замовленні номер 7
+*/
+
+SELECT p.model 
+FROM products AS p
+JOIN orders_to_products AS otp
+ON p.id = otp.product_id
+WHERE otp.order_id = 7;
