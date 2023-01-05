@@ -489,3 +489,53 @@ ORDER BY price ASC;
 ---1
 SELECT *, extract('years' from age(birthday)) FROM users
 ORDER BY extract('years' from age(birthday)), first_name DESC;
+
+--------
+/* Кількість однорічок */
+
+SELECT extract('years' from age(birthday)), count(*) 
+FROM users
+GROUP BY extract('years' from age(birthday))
+ORDER BY extract('years' from age(birthday));
+
+
+SELECT count(*), age 
+FROM (
+    SELECT *,  
+    extract('years' from age(birthday)) AS age
+    FROM users) AS u_w_age
+GROUP BY age
+ORDER BY age;
+
+--------------
+
+--HAVING
+
+---WHERE працює на рівні кортежу (рядка в таблиці), HAVING фільтрує на рівні групи
+
+SELECT count(*), age 
+FROM (
+    SELECT *,  
+    extract('years' from age(birthday)) AS age
+    FROM users) AS u_w_age
+GROUP BY age
+HAVING count(*) >= 5
+ORDER BY age;
+
+/*
+Витягти id користувачів, які робили щонайменше 3 замовлення.
+*/
+
+SELECT count(*), customer_id
+FROM orders
+GROUP BY customer_id
+HAVING count(*) >= 3;
+
+/*
+Витягти всі бренди, в яких сума кількості телефонів на складі більше ніж 50 000
+*/
+
+SELECT sum(quantity), brand
+FROM products
+GROUP BY brand
+HAVING sum(quantity) > 50000;
