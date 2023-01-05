@@ -184,7 +184,7 @@ OFFSET 20;
 */
 
 
-SELECT * FROM orders
+SELECT * FROM users
 LIMIT 50
 OFFSET 100;
 
@@ -198,10 +198,12 @@ FROM users;
 SELECT id, concat(first_name, ' ', last_name) AS full_name
 FROM users;
 
+
 ---1
 SELECT id, concat(first_name, ' ', last_name) AS full_name
 FROM users
 WHERE char_length(concat(first_name, ' ', last_name)) > 10;
+
 
 --2
 SELECT * FROM (
@@ -209,35 +211,6 @@ SELECT * FROM (
     FROM users
     ) AS fn
 WHERE char_length(fn.full_name) > 10;
-
-
--------------------------
-
-/*
-Створити нову таблицю workers:
-- id,
-- name,
-- salary,
-- birthday
-1. Додайти робітника з ім'ям Олег, 90р.н., зп 300
-2. Додайте робітницю Ярославу, зп 1200
-3. Додайте двох нових робітників одним запитом - Сашу 85р.н., зп 1000, і Машу 95р.н., зп 900
-4. Встановити Олегу зп у 500.
-5. Робітнику з id = 4 встановити рік народження 87
-6. Всім, в кого зп > 500, врізати до 700.
-7. Робітникам з 2 по 5 встановити рік народження 99
-8. Змінити Сашу на Женю і збільшити зп до 900.
-9. Вибрати всіх робітників, чия зп > 400.
-10. Вибрати робітника з id = 4
-11. Дізнатися зп та вік Жені.
-12. Знайти робітника з ім'ям Петя.
-13. Вибрати робітників у віці 27 років або з зп > 800
-14. Вибрати робітників у віці від 25 до 28 років (вкл)
-15. Вибрати всіх робітників, що народились у вересні
-16. Видалити робітника з id = 4
-17. Видалити Олега
-18. Видалити всіх робітників старше 30 років.
-*/
 
 
 UPDATE users
@@ -268,7 +241,6 @@ WHERE gender = 'female';
 SELECT avg(weight)
 FROM users
 WHERE gender = 'male';
-
 
 ---------
 
@@ -347,3 +319,173 @@ FROM products;
 --Кількість проданих телефонів всього магазину
 SELECT sum(quantity)
 FROM orders_to_products;
+
+
+-------------------------
+
+/*
+Створити нову таблицю workers:
+- id,
+- name,
+- salary,
+- birthday
+1. Додайти робітника з ім'ям Олег, 90р.н., зп 300
+2. Додайте робітницю Ярославу, зп 1200
+3. Додайте двох нових робітників одним запитом - Сашу 85р.н., зп 1000, і Машу 95р.н., зп 900
+4. Встановити Олегу зп у 500.
+5. Робітнику з id = 4 встановити рік народження 87
+6. Всім, в кого зп > 500, врізати до 700.
+7. Робітникам з 2 по 5 встановити рік народження 99
+8. Змінити Сашу на Женю і збільшити зп до 900.
+9. Вибрати всіх робітників, чия зп > 400.
+10. Вибрати робітника з id = 4
+11. Дізнатися зп та вік Жені.
+12. Знайти робітника з ім'ям Петя.
+13. Вибрати робітників у віці 27 років або з зп > 800
+14. Вибрати робітників у віці від 25 до 28 років (вкл)
+15. Вибрати всіх робітників, що народились у вересні
+16. Видалити робітника з id = 4
+17. Видалити Олега
+18. Видалити всіх робітників старше 30 років.
+*/
+
+CREATE TABLE workers(
+    id serial PRIMARY KEY,
+    name varchar(250) NOT NULL CHECK (name != ''),
+    salary int NOT NULL CHECK (salary > 0),
+    birthday date
+)
+
+-- 1 Додайти робітника з ім'ям Олег, 90р.н., зп 300
+INSERT INTO workers (name, salary, birthday) VALUES
+('Олег', 300, '1990-01-25');
+
+-- 2 Додайте робітницю Ярославу, зп 1200
+INSERT INTO workers (name, salary, birthday) VALUES
+('Ярослава', 1200, NULL);
+
+-- 3 Додайте двох нових робітників одним запитом - Сашу 85р.н., зп 1000, і Машу 95р.н., зп 900
+INSERT INTO workers (name, salary, birthday) VALUES
+('Саша', 1000, '1985-05-10'),
+('Маша', 900, '1995-08-21');
+
+-- 4 Встановити Олегу зп у 500.
+UPDATE workers
+SET salary = 500
+WHERE id =1;
+
+-- 5 Робітнику з id = 4 встановити рік народження 87
+UPDATE workers
+SET birthday = '1987-08-21'
+WHERE id = 4;
+
+--6 Всім, в кого зп > 500, врізати до 700.
+UPDATE workers
+SET salary = 700
+WHERE salary > 500;
+
+--7 Робітникам з 2 по 5 встановити рік народження 99
+UPDATE workers
+SET birthday = '1999-01-01'
+WHERE id BETWEEN 2 AND 5;
+
+--8 Змінити Сашу на Женю і збільшити зп до 900.
+UPDATE workers
+SET name= 'Женя', salary = 900
+WHERE id = 3;
+
+--9 Вибрати всіх робітників, чия зп > 400.
+SELECT * FROM workers
+WHERE salary > 400;
+
+--10 Вибрати робітника з id = 4 
+SELECT * FROM workers
+WHERE id = 4;
+
+--11 Дізнатися зп та вік Жені.
+SELECT salary, (extract('years' from age(birthday))) FROM workers
+WHERE name = 'Женя';
+
+--12 Знайти робітника з ім'ям Петя.
+SELECT * FROM workers
+WHERE name = 'Петя';
+
+--13 Вибрати робітників у віці 27 років або з зп > 800
+SELECT * FROM workers
+WHERE (extract('years' from age(birthday)) = 27) OR salary > 800;
+
+--14 Вибрати робітників у віці від 25 до 28 років (вкл)
+SELECT * FROM workers
+WHERE (extract('years' from age(birthday)) BETWEEN 25 AND 28);
+
+--15. Вибрати всіх робітників, що народились у вересні
+SELECT * FROM workers
+WHERE extract('month' from birthday) = 9;
+
+-- 16. Видалити робітника з id = 4
+DELETE from workers
+WHERE id = 4;
+
+-- 17. Видалити Олега
+DELETE from workers
+where name = 'Олег';
+
+-- 18. Видалити всіх робітників старше 30 років.
+DELETE from workers
+WHERE extract('years' from age(birthday)) > 20;
+
+
+
+--//////////////////Сортування, фільтрація/////////////////////////////
+
+---Дізнатись, якого бренду телефонів залишилось меньше всього на складі
+SELECT min(quantity), brand
+FROM products
+GROUP BY brand;
+
+/*
+Відсортувати юзерів за айді
+ORDER BY (за яким полем сортуємо) (принцип сортування: за більшенням ASC / за зменшенням DESC)
+*/
+
+SELECT * FROM users
+ORDER BY id ASC;
+
+SELECT * FROM users
+ORDER BY first_name ASC;
+
+------
+
+SELECT * FROM users
+ORDER BY height, birthday;
+
+---------------------
+
+SELECT *
+FROM products
+ORDER BY quantity;
+
+---------------
+
+/*
+Топ-5 найдорожчих телефонів
+*/
+
+SELECT *
+FROM products
+ORDER BY price DESC
+LIMIT 5;
+
+/*
+1. Відсортуйте користувачів за кількістю повних років (не дата народження, а кількість років), і для тих, хто має однаковий вік - за алфавітом у зворотньому порядку
+2. Відсортуйте по ціні від меншого до більшого
+*/
+
+---2
+SELECT *
+FROM products
+ORDER BY price ASC;
+
+---1
+SELECT *, extract('years' from age(birthday)) FROM users
+ORDER BY extract('years' from age(birthday)), first_name DESC;
