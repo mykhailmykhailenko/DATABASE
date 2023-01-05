@@ -703,3 +703,49 @@ SELECT u.id, email, o.id AS order_id
 FROM users AS u
 FULL JOIN orders AS o
 ON u.id = o.customer_id;
+
+------------------
+
+/* Знайти id замовлень, в яких є телефони бренду Samsung */
+
+SELECT otp.order_id, p.model
+FROM orders_to_products AS otp
+JOIN products AS p
+ON otp.product_id = p.id
+WHERE brand = 'Samsung';
+
+/* Кількість замовлень кожної моделі бренду Самсунг */
+
+SELECT p.model, count(*) AS amount
+FROM orders_to_products AS otp
+JOIN products AS p
+ON otp.product_id = p.id
+WHERE brand = 'Samsung'
+GROUP BY p.model;
+
+/* Дізнатись email користувачів, які замовляли '6 model 75'   */
+
+SELECT email
+FROM users AS u
+JOIN orders AS o
+ON u.id = o.customer_id
+JOIN orders_to_products AS otp
+ON o.id = otp.order_id
+JOIN products AS p
+ON otp.product_id = p.id
+WHERE p.model = '6 model 75';
+
+/*
+Знайти телефони, які ніхто не купував
+*/
+
+SELECT * 
+FROM products AS p
+LEFT JOIN orders_to_products AS otp
+ON p.id = otp.product_id
+WHERE otp.order_id IS NULL;
+
+/*
+Вивести id замовленнь разом з їхньою повною вартістю
+(кількість*ціну телефона)
+*/
