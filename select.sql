@@ -324,3 +324,26 @@ WHERE extract('years' from age(birthday)) BETWEEN 20 AND 30;
 SELECT count(*)
 FROM users
 WHERE height > 1.5
+
+
+--1. Кількість замовлень кожного юзера
+
+SELECT count(*), customer_id
+FROM orders
+GROUP BY customer_id;
+
+
+----Середня ціна телефону по кожному бренду
+
+SELECT avg(price), brand
+FROM products
+GROUP BY brand;
+
+
+---Кількість телефонів на складі (в наявності)
+SELECT sum(quantity)
+FROM products;
+
+--Кількість проданих телефонів всього магазину
+SELECT sum(quantity)
+FROM orders_to_products;
