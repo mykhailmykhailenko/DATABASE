@@ -941,3 +941,13 @@ WHERE owc.total_amount > (SELECT avg(o_w_sum.order_sum)
             ON p.id = otp.product_id
             GROUP BY otp.order_id
               ) AS o_w_sum);
+
+-----6
+
+SELECT u.id, u.first_name, count(otp.product_id)
+FROM users AS u
+JOIN orders AS o
+ON u.id = o.customer_id
+JOIN orders_to_products AS otp
+ON o.id = otp.order_id
+GROUP BY u.id;
