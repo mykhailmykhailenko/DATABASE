@@ -33,8 +33,17 @@ SELECT *, (
 FROM users;
 
 
+
 ALTER TABLE orders
 ADD COLUMN status boolean;
+
+UPDATE orders
+SET status = true
+WHERE id % 3 = 0;
+
+UPDATE orders
+SET status = false
+WHERE id % 2 = 0;
 
 
 /*
@@ -117,6 +126,7 @@ FROM users;
 */
 
 ---1
+
 SELECT *, (
     CASE brand
         WHEN 'iPhone' THEN 'Apple'
@@ -124,7 +134,6 @@ SELECT *, (
     END
 ) AS manufacturer
 FROM products;
-
 
 ---2
 SELECT *, (
@@ -136,8 +145,6 @@ SELECT *, (
     END
 ) AS price_category
 FROM products;
-
-
 
 ---3
 SELECT u.id, u.email, (
@@ -157,19 +164,16 @@ ON u.id = o.customer_id
 GROUP BY u.id, u.email;
 
 
-
 --------COALESCE----------
 
 SELECT id, brand, model, price, COALESCE(category, 'smartphone') AS category
 FROM products;
 
 
-
 -------GREATEST, LEAST-----
 
 SELECT *, LEAST(price, 500) AS sale_price
 FROM products;
-
 
 SELECT *, GREATEST(price, 500) AS new_price
 FROM products;
@@ -188,6 +192,14 @@ WHERE u.id NOT IN (
 /*
 Знайти телефони, які ніколи не купували
 */
+
+
+SELECT *
+FROM products AS p
+WHERE p.id NOT IN (
+    SELECT product_id
+    FROM orders_to_products
+);
 
 SELECT * 
 FROM products AS p
