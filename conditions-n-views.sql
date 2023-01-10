@@ -158,4 +158,18 @@ GROUP BY u.id, u.email;
 
 
 
-------------------
+--------COALESCE----------
+
+SELECT id, brand, model, price, COALESCE(category, 'smartphone') AS category
+FROM products;
+
+
+
+-------GREATEST, LEAST-----
+
+SELECT *, LEAST(price, 500) AS sale_price
+FROM products;
+
+
+SELECT *, GREATEST(price, 500) AS new_price
+FROM products;
