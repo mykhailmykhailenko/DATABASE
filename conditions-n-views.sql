@@ -173,3 +173,65 @@ FROM products;
 
 SELECT *, GREATEST(price, 500) AS new_price
 FROM products;
+
+-----------Підзапити (подзапросы) -----------
+
+/*   IN, NOT IN, SOME/ANY, EXISTS */
+
+SELECT *
+FROM users AS u
+WHERE u.id NOT IN (
+        SELECT o.customer_id
+        FROM orders AS o
+);
+
+/*
+Знайти телефони, які ніколи не купували
+*/
+
+SELECT * 
+FROM products AS p
+WHERE p.id NOT IN (
+    SELECT product_id
+    FROM orders_to_products
+);
+
+-----------------EXISTS---------------
+
+SELECT *
+FROM users
+WHERE id = 290;
+
+SELECT EXISTS
+    (SELECT *
+    FROM users
+    WHERE id = 293);
+
+---- Чи робив юзер 293 хоч одне замовлення?
+
+SELECT EXISTS
+    (SELECT o.customer_id
+    FROM orders AS o
+    WHERE id = 293);
+
+SELECT u.id, u.email, (EXISTS
+                    (SELECT o.customer_id
+                    FROM orders AS o))
+FROM users AS u;
+
+----ANY/SOME----
+
+---(IN)---
+
+--Якщо хоч для якогось значення умова = true -  то повернеться true
+
+--------------ALL--------
+
+--Якщо для всіх рядків значення = true
+
+SELECT *
+FROM products AS p
+WHERE p.id != ALL (
+            SELECT product_id 
+            FROM orders_to_products
+);
